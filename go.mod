@@ -6,5 +6,5 @@ require (
 	goark.dev/boot v0.0.0
 	goark.dev/goark v0.0.0
 	goark.dev/observe v0.0.0-20260902005121-bfd1b0de0c99
-	goark.dev/observe-sdk v0.0.0-20260902102444-ff94f3caa1ec
+	goark.dev/observe-sdk v0.0.0-20260902104503-b7f0711cb178
 )
