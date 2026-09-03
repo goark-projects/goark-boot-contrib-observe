@@ -17,6 +17,8 @@ gbcobserve.AutoConfigure(
 
 starter 将 `goark.observe.provider` 注册为主 `observe.Provider` Bean，并将 `goark.observe.lifecycle` 注册为生命周期适配器。关闭时先刷新已接收数据，再调用 Provider 的幂等关闭契约。
 
+各 exporter starter 以延迟 Bean 形式注册 `observe.Exporter`。Provider 创建时统一收集这些 Bean，因此本模块无需依赖任何具体 exporter；直接装配仍可使用 `WithExporters`。通过 `WithProvider` 传入外部 Provider 时，其 exporter 也由外部负责装配。
+
 ## 配置
 
 - `goark.observe.enabled`：默认为 `true`；禁用时注册 no-op Provider。

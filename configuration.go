@@ -43,7 +43,7 @@ func (c configuration) RegisterWithContext(_ context.Context, config appcontext.
 }
 
 func registerProvider(registry *goarkcontainer.Registry, resolved settings) error {
-	return goarkcontainer.Register[observe.Provider](registry, BeanNameProvider, func(context.Context, goarkcontainer.Resolver) (observe.Provider, error) {
+	return goarkcontainer.Register[observe.Provider](registry, BeanNameProvider, func(ctx context.Context, resolver goarkcontainer.Resolver) (observe.Provider, error) {
 		if !*resolved.enabled {
 			return observe.NoopProvider(), nil
 		}
@@ -51,6 +51,13 @@ func registerProvider(registry *goarkcontainer.Registry, resolved settings) erro
 			return resolved.provider, nil
 		}
 		options := append([]observesdk.Option(nil), resolved.sdkOptions...)
+		exporters, err := goarkcontainer.GetAllByType[observe.Exporter](ctx, resolver)
+		if err != nil {
+			return nil, err
+		}
+		if len(exporters) > 0 {
+			options = append(options, observesdk.WithExporters(exporters...))
+		}
 		options = append(options, observesdk.WithMetricCardinalityLimit(resolved.cardinalityLimit))
 		return resolved.factory(resolved.resource(), options)
 	}, goarkcontainer.WithPrimary())

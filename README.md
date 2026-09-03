@@ -17,6 +17,8 @@ gbcobserve.AutoConfigure(
 
 The starter registers `goark.observe.provider` as the primary `observe.Provider` bean and `goark.observe.lifecycle` as its lifecycle adapter. Shutdown force-flushes accepted telemetry and then invokes the provider's idempotent shutdown contract.
 
+Exporter starters register lazy `observe.Exporter` beans. The provider collects all such beans during creation, preserving a vendor-neutral extension boundary without coupling this module to concrete exporters. `WithExporters` remains available for direct assembly. An externally supplied provider owns its own exporter wiring.
+
 ## Properties
 
 - `goark.observe.enabled`: defaults to `true`; disabled mode registers the no-op provider.
